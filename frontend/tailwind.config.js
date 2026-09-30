@@ -10,10 +10,14 @@ export default {
         sans: ['Inter', 'sans-serif'],
       },
       colors: {
-        primary: '#2563EB',
-        dark: '#0F172A',
-        light: '#F8FAFC',
-        accent: '#F59E0B',
+        primary: '#111827',
+        secondary: '#374151',
+        dark: '#000000',
+        light: '#F8F8F8',
+        border: '#E5E7EB',
+        success: '#16A34A',
+        danger: '#DC2626',
+        accent: '#111827',
       }
     },
   },

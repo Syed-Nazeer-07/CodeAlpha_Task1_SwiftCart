@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
+import { Toaster } from 'react-hot-toast';
 
 // Lazy loaded pages for performance
 const Home = lazy(() => import('./pages/Home'));
@@ -27,7 +28,8 @@ const PageLoader = () => (
 
 function App() {
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-light selection:bg-primary selection:text-white">
+    <div className="min-h-screen flex flex-col font-sans bg-white selection:bg-primary selection:text-white">
+      <Toaster position="bottom-right" toastOptions={{ style: { background: '#111827', color: '#fff' } }} />
       <Navbar />
       <main className="flex-grow pt-24 pb-12 w-full mx-auto max-w-[1920px]">
         <Suspense fallback={<PageLoader />}>

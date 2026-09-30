@@ -16,7 +16,7 @@ const orderSchema = new mongoose.Schema({
     postalCode: { type: String, required: true },
     country: { type: String, required: true }
   },
-  status: { type: String, enum: ['Pending', 'Processing', 'Delivered'], default: 'Pending' }
+  status: { type: String, enum: ['Processing', 'Packed', 'Shipped', 'Out For Delivery', 'Delivered', 'Cancelled'], default: 'Processing' }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Order', orderSchema);

@@ -1,11 +1,11 @@
 import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { CartContext } from '../context/CartContext';
-import { Trash2, ArrowRight, ShoppingBag, ShieldCheck } from 'lucide-react';
+import { Trash2, ArrowRight, ShoppingBag, ShieldCheck, Minus, Plus } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Cart = () => {
-  const { cart, removeFromCart } = useContext(CartContext);
+  const { cart, removeFromCart, updateCartQuantity } = useContext(CartContext);
   const navigate = useNavigate();
 
   const cartItems = cart?.products || [];
@@ -13,6 +13,18 @@ const Cart = () => {
   const totalPrice = cartItems.reduce((acc, item) => {
     return acc + (item.productId?.price * item.quantity);
   }, 0);
+
+  const handleDecrease = (item) => {
+    if (item.quantity <= 1) {
+      removeFromCart(item.productId._id);
+    } else {
+      updateCartQuantity(item.productId._id, item.quantity - 1);
+    }
+  };
+
+  const handleIncrease = (item) => {
+    updateCartQuantity(item.productId._id, item.quantity + 1);
+  };
 
   if (cartItems.length === 0) {
     return (
@@ -22,7 +34,7 @@ const Cart = () => {
         </div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4 text-dark text-center">Your Cart is Empty</h2>
         <p className="text-sm sm:text-base text-slate-500 mb-8 sm:mb-10 text-center max-w-md">Looks like you haven't added anything to your cart yet. Discover our premium collections.</p>
-        <Link to="/" className="bg-primary text-white px-8 py-3 sm:py-4 rounded-full font-semibold hover:bg-slate-800 transition-colors shadow-lg text-sm sm:text-base w-full sm:w-auto text-center">
+        <Link to="/" className="bg-dark text-white px-8 py-3 sm:py-4 rounded-full font-semibold hover:bg-black transition-colors shadow-lg text-sm sm:text-base w-full sm:w-auto text-center">
           Start Shopping
         </Link>
       </div>
@@ -30,7 +42,10 @@ const Cart = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 sm:mt-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 sm:mt-8 mb-20">
+      <button aria-label="Back to products" onClick={() => navigate(-1)} className="flex items-center text-dark font-semibold text-sm hover:underline mb-6">
+        <ArrowRight className="w-4 h-4 mr-2 rotate-180" /> Continue Shopping
+      </button>
       <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-dark mb-6 sm:mb-10">Shopping Cart</h1>
       
       <div className="flex flex-col xl:flex-row gap-8 lg:gap-12">
@@ -58,28 +73,38 @@ const Cart = () => {
                         <img src={item.productId.image} alt={item.productId.title} className="w-full h-full object-contain p-2" />
                       </div>
                       <div className="flex-grow">
-                        <Link to={`/product/${item.productId._id}`} className="text-sm sm:text-base font-bold text-dark hover:text-primary transition-colors line-clamp-2">
+                        <Link to={`/product/${item.productId._id}`} className="text-sm sm:text-base font-bold text-dark hover:text-black transition-colors line-clamp-2">
                           {item.productId.title}
                         </Link>
-                        <div className="text-xs text-slate-500 mt-1 uppercase tracking-wider font-semibold">{item.productId.category}</div>
-                        {/* Mobile Only: Price & Delete */}
-                        <div className="flex sm:hidden justify-between items-center mt-3">
+                        <div className="text-xs text-slate-500 mt-1 uppercase tracking-wider font-semibold">
+                          {item.productId.brand ? `${item.productId.brand} • ${item.productId.category}` : item.productId.category}
+                        </div>
+                        {/* Mobile Only: Price & Controls */}
+                        <div className="flex sm:hidden justify-between items-center mt-4">
                           <span className="font-bold text-dark">${(item.productId.price * item.quantity).toFixed(2)}</span>
-                          <button 
-                            aria-label="Remove item"
-                            onClick={() => removeFromCart(item.productId._id)}
-                            className="text-slate-400 hover:text-red-500 p-2 rounded-full hover:bg-red-50 transition-colors"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
+                          
+                          <div className="flex items-center space-x-2 bg-slate-50 border border-slate-200 rounded-full p-1">
+                            <button onClick={() => handleDecrease(item)} className="w-6 h-6 flex items-center justify-center bg-white rounded-full shadow-sm text-dark hover:bg-slate-100">
+                              <Minus className="w-3 h-3" />
+                            </button>
+                            <span className="text-xs font-bold w-4 text-center">{item.quantity}</span>
+                            <button onClick={() => handleIncrease(item)} className="w-6 h-6 flex items-center justify-center bg-white rounded-full shadow-sm text-dark hover:bg-slate-100">
+                              <Plus className="w-3 h-3" />
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
                     
-                    <div className="col-span-2 flex sm:justify-center w-full sm:w-auto items-center">
-                      <span className="sm:hidden text-sm text-slate-500 mr-3">Qty:</span>
-                      <div className="bg-slate-50 px-4 py-2 rounded-lg text-sm font-semibold text-slate-700 border border-slate-200">
-                        {item.quantity}
+                    <div className="col-span-2 hidden sm:flex justify-center items-center">
+                      <div className="flex items-center space-x-3 bg-slate-50 border border-slate-200 rounded-full p-1">
+                        <button onClick={() => handleDecrease(item)} className="w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-sm text-dark hover:bg-slate-100 transition-colors">
+                          <Minus className="w-4 h-4" />
+                        </button>
+                        <span className="text-sm font-bold w-4 text-center">{item.quantity}</span>
+                        <button onClick={() => handleIncrease(item)} className="w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-sm text-dark hover:bg-slate-100 transition-colors">
+                          <Plus className="w-4 h-4" />
+                        </button>
                       </div>
                     </div>
                     
@@ -94,7 +119,7 @@ const Cart = () => {
                       <button 
                         aria-label="Remove item"
                         onClick={() => removeFromCart(item.productId._id)}
-                        className="text-slate-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100 p-2"
+                        className="text-slate-300 hover:text-red-500 transition-colors p-2"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -137,7 +162,7 @@ const Cart = () => {
             
             <button 
               onClick={() => navigate('/checkout')}
-              className="w-full bg-primary text-white px-6 py-4 rounded-full hover:bg-slate-800 transition-all shadow-lg hover:shadow-xl flex justify-center items-center font-bold text-base sm:text-lg"
+              className="w-full bg-dark text-white px-6 py-4 rounded-full hover:bg-black transition-all shadow-lg hover:shadow-xl flex justify-center items-center font-bold text-base sm:text-lg"
             >
               Proceed to Checkout <ArrowRight className="w-5 h-5 ml-2" />
             </button>

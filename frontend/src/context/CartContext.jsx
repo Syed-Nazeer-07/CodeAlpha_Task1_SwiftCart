@@ -44,8 +44,17 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+  const updateCartQuantity = async (productId, quantity) => {
+    try {
+      const { data } = await api.put(`/cart/update/${productId}`, { quantity });
+      setCart(data);
+    } catch (error) {
+      console.error("Error updating cart quantity:", error);
+    }
+  };
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, fetchCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateCartQuantity, fetchCart }}>
       {children}
     </CartContext.Provider>
   );

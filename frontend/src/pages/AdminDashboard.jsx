@@ -64,7 +64,7 @@ const AdminDashboard = () => {
         {['products', 'orders', 'users'].map(tab => (
           <button 
             key={tab}
-            className={`px-6 py-2 capitalize font-semibold ${activeTab === tab ? 'border-b-2 border-primary text-dark' : 'text-slate-500'}`}
+            className={`px-6 py-2 capitalize font-semibold ${activeTab === tab ? 'border-b-2 border-dark text-dark' : 'text-slate-500'}`}
             onClick={() => setActiveTab(tab)}
           >
             {tab}
@@ -76,13 +76,13 @@ const AdminDashboard = () => {
         <div>
           <h2 className="text-xl font-bold mb-4">Add New Product</h2>
           <form onSubmit={handleProductSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 bg-slate-50 p-4 rounded-lg">
-            <input required placeholder="Title" value={newProduct.title} onChange={e=>setNewProduct({...newProduct, title: e.target.value})} className="p-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm" />
-            <input required placeholder="Category" value={newProduct.category} onChange={e=>setNewProduct({...newProduct, category: e.target.value})} className="p-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm" />
-            <input required type="number" placeholder="Price" value={newProduct.price} onChange={e=>setNewProduct({...newProduct, price: e.target.value})} className="p-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm" />
-            <input required type="number" placeholder="Stock" value={newProduct.stock} onChange={e=>setNewProduct({...newProduct, stock: e.target.value})} className="p-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm" />
-            <input required placeholder="Image URL" value={newProduct.image} onChange={e=>setNewProduct({...newProduct, image: e.target.value})} className="p-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm md:col-span-2" />
-            <textarea required placeholder="Description" value={newProduct.description} onChange={e=>setNewProduct({...newProduct, description: e.target.value})} className="p-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm md:col-span-2"></textarea>
-            <button type="submit" className="bg-primary text-white py-3 rounded-xl md:col-span-2 font-bold hover:bg-slate-800 transition-colors shadow-sm">Add Product</button>
+            <input required placeholder="Title" value={newProduct.title} onChange={e=>setNewProduct({...newProduct, title: e.target.value})} className="p-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-dark focus:ring-2 focus:ring-dark/20 transition-all text-sm" />
+            <input required placeholder="Category" value={newProduct.category} onChange={e=>setNewProduct({...newProduct, category: e.target.value})} className="p-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-dark focus:ring-2 focus:ring-dark/20 transition-all text-sm" />
+            <input required type="number" placeholder="Price" value={newProduct.price} onChange={e=>setNewProduct({...newProduct, price: e.target.value})} className="p-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-dark focus:ring-2 focus:ring-dark/20 transition-all text-sm" />
+            <input required type="number" placeholder="Stock" value={newProduct.stock} onChange={e=>setNewProduct({...newProduct, stock: e.target.value})} className="p-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-dark focus:ring-2 focus:ring-dark/20 transition-all text-sm" />
+            <input required placeholder="Image URL" value={newProduct.image} onChange={e=>setNewProduct({...newProduct, image: e.target.value})} className="p-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-dark focus:ring-2 focus:ring-dark/20 transition-all text-sm md:col-span-2" />
+            <textarea required placeholder="Description" value={newProduct.description} onChange={e=>setNewProduct({...newProduct, description: e.target.value})} className="p-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-dark focus:ring-2 focus:ring-dark/20 transition-all text-sm md:col-span-2"></textarea>
+            <button type="submit" className="bg-dark text-white py-3 rounded-full md:col-span-2 font-bold hover:bg-black transition-colors shadow-sm">Add Product</button>
           </form>
 
           <h2 className="text-xl font-bold mb-4">Manage Products</h2>
@@ -136,11 +136,14 @@ const AdminDashboard = () => {
                       <select 
                         value={o.status}
                         onChange={(e) => updateOrderStatus(o._id, e.target.value)}
-                        className="border p-1 rounded bg-white text-sm"
+                        className="border border-slate-200 p-2 rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-dark/20"
                       >
-                        <option value="Pending">Pending</option>
                         <option value="Processing">Processing</option>
+                        <option value="Packed">Packed</option>
+                        <option value="Shipped">Shipped</option>
+                        <option value="Out For Delivery">Out For Delivery</option>
                         <option value="Delivered">Delivered</option>
+                        <option value="Cancelled">Cancelled</option>
                       </select>
                     </td>
                   </tr>
